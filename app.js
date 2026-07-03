@@ -427,6 +427,7 @@ function updateTableRow(locationId, providerId, data) {
 }
 
 // Beregn og vis den konsoliderte/gjennomsnittlige værstatistikk i Herofeltet
+// Beregn og vis den konsoliderte/gjennomsnittlige værstatistikk i Herofeltet
 function updateHeroSummary(locationId) {
     const locData = AppState.weatherData[locationId];
     const validDataPoints = Object.values(locData).filter(d => d && d.temp !== undefined);
@@ -446,6 +447,12 @@ function updateHeroSummary(locationId) {
         } else {
             tempValEl.textContent = avgTemp.toFixed(1);
         }
+    }
+
+    // Vis enhet for gjennomsnittstemp
+    const tempUnitEl = document.getElementById(`avg-unit-${locationId}`);
+    if (tempUnitEl) {
+        tempUnitEl.textContent = AppState.unit === "F" ? "°F" : "°C";
     }
 
     // 2. Bestem dominerende værforhold (modus/flertall)
@@ -474,39 +481,60 @@ function updateHeroSummary(locationId) {
         descEl.textContent = WEATHER_DESC_NO[dominantCond];
     }
 
-    // 3. Beregn gjennomsnittlig Olivia-faktor (UV) og oppdater heromerket
+    // 3. Beregn gjennomsnittlig Olivia-faktor (UV) og oppdater heromerket/gauge
     const validUvPoints = validDataPoints.filter(d => d.uv !== undefined && d.uv !== null);
     if (validUvPoints.length > 0) {
         const sumUv = validUvPoints.reduce((acc, curr) => acc + curr.uv, 0);
         const avgUv = parseFloat((sumUv / validUvPoints.length).toFixed(1));
         
-        const badgeEl = document.getElementById(`olivia-badge-${locationId}`);
-        if (badgeEl) {
-            const dotEl = badgeEl.querySelector(".olivia-dot");
-            const textEl = badgeEl.querySelector(".olivia-text");
-            
-            let uvColor = "#10b981"; // Lav
-            let uvTip = "Lav, trygg";
-            
-            if (avgUv >= 8) {
-                uvColor = "#ec4899"; // Ekstrem (pink)
-                uvTip = "Ekstrem, søk skygge!";
-            } else if (avgUv >= 6) {
-                uvColor = "#f97316"; // Høy (orange)
-                uvTip = "Høy, smør deg!";
-            } else if (avgUv >= 3) {
-                uvColor = "#f59e0b"; // Moderat (gul/oransje)
-                uvTip = "Moderat, beskytt øynene";
-            }
-            
-            if (dotEl) {
-                dotEl.style.backgroundColor = uvColor;
-                dotEl.style.boxShadow = `0 0 10px ${uvColor}`;
-            }
-            
-            if (textEl) {
-                textEl.textContent = `Olivia-faktor: ${avgUv.toFixed(1)} (${uvTip})`;
-            }
+        const valueEl = document.getElementById(`avg-olivia-value-${locationId}`);
+        const statusEl = document.getElementById(`avg-olivia-status-${locationId}`);
+        const adviceEl = document.getElementById(`avg-olivia-advice-${locationId}`);
+        const heroContainer = document.getElementById(`olivia-hero-container-${locationId}`);
+        const gaugeEl = heroContainer ? heroContainer.querySelector(".olivia-circle-gauge") : null;
+        
+        let uvColor = "#10b981"; // Lav
+        let uvRgb = "16, 185, 129";
+        let uvStatusText = "LAV";
+        let uvStatusClass = "lav";
+        let uvAdvice = "Trygt å være ute. Ingen spesiell solbeskyttelse kreves.";
+        
+        if (avgUv >= 8) {
+            uvColor = "#ec4899"; // Ekstrem (pink)
+            uvRgb = "236, 72, 153";
+            uvStatusText = "EKSTREM";
+            uvStatusClass = "ekstrem";
+            uvAdvice = "Ekstrem risiko! Unngå direkte sol mellom kl. 11 og 15. Bruk hodeplagg, klær, solbriller og SPF 50+!";
+        } else if (avgUv >= 6) {
+            uvColor = "#f97316"; // Høy (orange)
+            uvRgb = "249, 115, 22";
+            uvStatusText = "HØY";
+            uvStatusClass = "høy";
+            uvAdvice = "Beskyttelse er nødvendig. Bruk SPF 30+, solbriller, hodeplagg, og søk skygge midt på dagen!";
+        } else if (avgUv >= 3) {
+            uvColor = "#f59e0b"; // Moderat (gul/oransje)
+            uvRgb = "245, 158, 11";
+            uvStatusText = "MODERAT";
+            uvStatusClass = "moderat";
+            uvAdvice = "Moderat styrke. Smør deg med solkrem med minst SPF 15, og bruk solbriller i direkte solskinn.";
+        }
+        
+        if (valueEl) {
+            valueEl.textContent = avgUv.toFixed(1);
+        }
+        
+        if (statusEl) {
+            statusEl.textContent = uvStatusText;
+            statusEl.className = `olivia-gauge-status ${uvStatusClass}`;
+        }
+        
+        if (adviceEl) {
+            adviceEl.textContent = uvAdvice;
+        }
+        
+        if (gaugeEl) {
+            gaugeEl.style.borderColor = uvColor;
+            gaugeEl.style.boxShadow = `0 0 25px rgba(${uvRgb}, 0.45), inset 0 0 15px rgba(${uvRgb}, 0.15)`;
         }
     }
 }

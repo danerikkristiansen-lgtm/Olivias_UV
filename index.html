@@ -86,7 +86,7 @@
     <main class="dashboard-container">
         <!-- Moss Seksjon -->
         <section class="location-card climate-nordic-moss" id="location-moss" aria-labelledby="title-moss">
-            <div class="location-hero">
+            <div class="location-hero" id="olivia-hero-container-moss">
                 <div class="hero-overlay"></div>
                 <div class="location-meta">
                     <div class="location-badges">
@@ -95,19 +95,28 @@
                     </div>
                     <h2 id="title-moss">Moss</h2>
                     <p class="coords">59.4340° N, 10.6577° Ø</p>
-                    <div class="olivia-hero-badge" id="olivia-badge-moss">
-                        <span class="olivia-dot"></span>
-                        <span class="olivia-text">Olivia-faktor: --</span>
+                    
+                    <!-- Sekundær værboks: Temperatur og beskrivelse -->
+                    <div class="secondary-weather-box">
+                        <div class="inline-weather-icon" id="avg-icon-moss">
+                            <!-- SVG lades her -->
+                        </div>
+                        <div class="inline-weather-text">
+                            <span class="inline-temp" id="avg-temp-moss">--</span><span class="inline-unit" id="avg-unit-moss">°C</span>
+                            <span class="inline-dot">•</span>
+                            <span class="inline-desc" id="avg-desc-moss">Laster vær...</span>
+                        </div>
                     </div>
                 </div>
-                <div class="location-summary-temp">
-                    <div class="avg-icon-container" id="avg-icon-moss">
-                        <!-- Dynamisk SVG -->
+
+                <!-- Hovedvisning: Kjempe-stor Olivia-faktor! -->
+                <div class="location-summary-olivia">
+                    <div class="olivia-circle-gauge">
+                        <span class="olivia-gauge-label">Olivia-faktor</span>
+                        <span class="olivia-gauge-value" id="avg-olivia-value-moss">--</span>
+                        <span class="olivia-gauge-status" id="avg-olivia-status-moss">Laster...</span>
                     </div>
-                    <div class="temp-display">
-                        <span class="temp-value" id="avg-temp-moss">--</span><span class="temp-unit">°C</span>
-                    </div>
-                    <p class="weather-desc" id="avg-desc-moss">Laster værdata...</p>
+                    <p class="olivia-hero-advice" id="avg-olivia-advice-moss">Beregner UV-risiko...</p>
                 </div>
             </div>
 
@@ -118,11 +127,11 @@
                         <thead>
                             <tr>
                                 <th>Leverandør</th>
+                                <th>Olivia-faktor</th>
                                 <th>Temperatur</th>
                                 <th>Værforhold</th>
                                 <th>Vindstyrke</th>
                                 <th>Nedbør / Fukt</th>
-                                <th>Olivia-faktor</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -133,17 +142,17 @@
                                     <span class="provider-logo provider-met">MET</span>
                                     <span class="provider-name">MET Norway</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- %</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- %</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                             <!-- Rad 2: Open-Meteo -->
                             <tr id="row-moss-openmeteo">
@@ -151,17 +160,17 @@
                                     <span class="provider-logo provider-openmeteo">OM</span>
                                     <span class="provider-name">Open-Meteo</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- mm</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- mm</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                             <!-- Rad 3: wttr.in -->
                             <tr id="row-moss-wttr">
@@ -169,27 +178,23 @@
                                     <span class="provider-logo provider-wttr">WT</span>
                                     <span class="provider-name">wttr.in</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- mm</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- mm</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </section>
 
         <!-- Brekkstad Seksjon -->
         <section class="location-card climate-nordic-brekkstad" id="location-brekkstad" aria-labelledby="title-brekkstad">
-            <div class="location-hero">
+            <div class="location-hero" id="olivia-hero-container-brekkstad">
                 <div class="hero-overlay"></div>
                 <div class="location-meta">
                     <div class="location-badges">
@@ -198,19 +203,28 @@
                     </div>
                     <h2 id="title-brekkstad">Brekkstad</h2>
                     <p class="coords">63.6871° N, 9.6627° Ø</p>
-                    <div class="olivia-hero-badge" id="olivia-badge-brekkstad">
-                        <span class="olivia-dot"></span>
-                        <span class="olivia-text">Olivia-faktor: --</span>
+                    
+                    <!-- Sekundær værboks: Temperatur og beskrivelse -->
+                    <div class="secondary-weather-box">
+                        <div class="inline-weather-icon" id="avg-icon-brekkstad">
+                            <!-- SVG lades her -->
+                        </div>
+                        <div class="inline-weather-text">
+                            <span class="inline-temp" id="avg-temp-brekkstad">--</span><span class="inline-unit" id="avg-unit-brekkstad">°C</span>
+                            <span class="inline-dot">•</span>
+                            <span class="inline-desc" id="avg-desc-brekkstad">Laster vær...</span>
+                        </div>
                     </div>
                 </div>
-                <div class="location-summary-temp">
-                    <div class="avg-icon-container" id="avg-icon-brekkstad">
-                        <!-- Dynamisk SVG -->
+
+                <!-- Hovedvisning: Kjempe-stor Olivia-faktor! -->
+                <div class="location-summary-olivia">
+                    <div class="olivia-circle-gauge">
+                        <span class="olivia-gauge-label">Olivia-faktor</span>
+                        <span class="olivia-gauge-value" id="avg-olivia-value-brekkstad">--</span>
+                        <span class="olivia-gauge-status" id="avg-olivia-status-brekkstad">Laster...</span>
                     </div>
-                    <div class="temp-display">
-                        <span class="temp-value" id="avg-temp-brekkstad">--</span><span class="temp-unit">°C</span>
-                    </div>
-                    <p class="weather-desc" id="avg-desc-brekkstad">Laster værdata...</p>
+                    <p class="olivia-hero-advice" id="avg-olivia-advice-brekkstad">Beregner UV-risiko...</p>
                 </div>
             </div>
 
@@ -221,11 +235,11 @@
                         <thead>
                             <tr>
                                 <th>Leverandør</th>
+                                <th>Olivia-faktor</th>
                                 <th>Temperatur</th>
                                 <th>Værforhold</th>
                                 <th>Vindstyrke</th>
                                 <th>Nedbør / Fukt</th>
-                                <th>Olivia-faktor</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -236,17 +250,17 @@
                                     <span class="provider-logo provider-met">MET</span>
                                     <span class="provider-name">MET Norway</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- %</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- %</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                             <!-- Rad 2: Open-Meteo -->
                             <tr id="row-brekkstad-openmeteo">
@@ -254,17 +268,17 @@
                                     <span class="provider-logo provider-openmeteo">OM</span>
                                     <span class="provider-name">Open-Meteo</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- mm</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- mm</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                             <!-- Rad 3: wttr.in -->
                             <tr id="row-brekkstad-wttr">
@@ -272,17 +286,17 @@
                                     <span class="provider-logo provider-wttr">WT</span>
                                     <span class="provider-name">wttr.in</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- mm</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- mm</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -292,7 +306,7 @@
 
         <!-- Phuket Seksjon -->
         <section class="location-card climate-tropical-phuket" id="location-phuket" aria-labelledby="title-phuket">
-            <div class="location-hero">
+            <div class="location-hero" id="olivia-hero-container-phuket">
                 <div class="hero-overlay"></div>
                 <div class="location-meta">
                     <div class="location-badges">
@@ -301,19 +315,28 @@
                     </div>
                     <h2 id="title-phuket">Phuket</h2>
                     <p class="coords">7.8804° N, 98.3922° Ø</p>
-                    <div class="olivia-hero-badge" id="olivia-badge-phuket">
-                        <span class="olivia-dot"></span>
-                        <span class="olivia-text">Olivia-faktor: --</span>
+                    
+                    <!-- Sekundær værboks: Temperatur og beskrivelse -->
+                    <div class="secondary-weather-box">
+                        <div class="inline-weather-icon" id="avg-icon-phuket">
+                            <!-- SVG lades her -->
+                        </div>
+                        <div class="inline-weather-text">
+                            <span class="inline-temp" id="avg-temp-phuket">--</span><span class="inline-unit" id="avg-unit-phuket">°C</span>
+                            <span class="inline-dot">•</span>
+                            <span class="inline-desc" id="avg-desc-phuket">Laster vær...</span>
+                        </div>
                     </div>
                 </div>
-                <div class="location-summary-temp">
-                    <div class="avg-icon-container" id="avg-icon-phuket">
-                        <!-- Dynamisk SVG -->
+
+                <!-- Hovedvisning: Kjempe-stor Olivia-faktor! -->
+                <div class="location-summary-olivia">
+                    <div class="olivia-circle-gauge">
+                        <span class="olivia-gauge-label">Olivia-faktor</span>
+                        <span class="olivia-gauge-value" id="avg-olivia-value-phuket">--</span>
+                        <span class="olivia-gauge-status" id="avg-olivia-status-phuket">Laster...</span>
                     </div>
-                    <div class="temp-display">
-                        <span class="temp-value" id="avg-temp-phuket">--</span><span class="temp-unit">°C</span>
-                    </div>
-                    <p class="weather-desc" id="avg-desc-phuket">Laster værdata...</p>
+                    <p class="olivia-hero-advice" id="avg-olivia-advice-phuket">Beregner UV-risiko...</p>
                 </div>
             </div>
 
@@ -324,11 +347,11 @@
                         <thead>
                             <tr>
                                 <th>Leverandør</th>
+                                <th>Olivia-faktor</th>
                                 <th>Temperatur</th>
                                 <th>Værforhold</th>
                                 <th>Vindstyrke</th>
                                 <th>Nedbør / Fukt</th>
-                                <th>Olivia-faktor</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -339,17 +362,17 @@
                                     <span class="provider-logo provider-met">MET</span>
                                     <span class="provider-name">MET Norway</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- %</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- %</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                             <!-- Rad 2: Open-Meteo -->
                             <tr id="row-phuket-openmeteo">
@@ -357,17 +380,17 @@
                                     <span class="provider-logo provider-openmeteo">OM</span>
                                     <span class="provider-name">Open-Meteo</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- mm</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- mm</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                             <!-- Rad 3: wttr.in -->
                             <tr id="row-phuket-wttr">
@@ -375,17 +398,17 @@
                                     <span class="provider-logo provider-wttr">WT</span>
                                     <span class="provider-name">wttr.in</span>
                                 </td>
-                                <td class="table-temp">--°C</td>
-                                <td class="table-condition">
+                                <td class="table-uv" data-label="Olivia-faktor">--</td>
+                                <td class="table-temp" data-label="Temperatur">--°C</td>
+                                <td class="table-condition" data-label="Værforhold">
                                     <div class="table-cond-cell">
                                         <div class="table-icon-wrapper"></div>
                                         <span>Laster...</span>
                                     </div>
                                 </td>
-                                <td class="table-wind">-- m/s</td>
-                                <td class="table-precip">-- mm</td>
-                                <td class="table-uv">--</td>
-                                <td><span class="status-indicator status-loading">Henter</span></td>
+                                <td class="table-wind" data-label="Vindstyrke">-- m/s</td>
+                                <td class="table-precip" data-label="Nedbør / Fukt">-- mm</td>
+                                <td data-label="Status"><span class="status-indicator status-loading">Henter</span></td>
                             </tr>
                         </tbody>
                     </table>

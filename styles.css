@@ -494,37 +494,71 @@ button:focus-visible,
     letter-spacing: 0.02em;
 }
 
-.olivia-hero-badge {
-    display: inline-flex;
+/* Sekundær værboks: inline temperatur og beskrivelse under lokasjonstittelen */
+.secondary-weather-box {
+    display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 6px 14px;
-    border-radius: var(--radius-md);
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
     margin-top: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    width: fit-content;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: border-color var(--transition-fast), transform var(--transition-normal);
+}
+
+.secondary-weather-box:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1.5px);
+}
+
+.inline-weather-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.inline-weather-icon svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+.inline-weather-text {
+    display: flex;
+    align-items: center;
     font-size: 0.95rem;
     font-weight: 600;
-    letter-spacing: 0.01em;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: transform var(--transition-normal), border-color var(--transition-fast);
+    color: white;
+    gap: 0.4rem;
 }
 
-.olivia-hero-badge:hover {
-    border-color: rgba(255, 255, 255, 0.25);
-    transform: translateY(-1px);
+.inline-temp {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
-.olivia-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: var(--radius-full);
-    background: #10b981;
-    box-shadow: 0 0 10px #10b981;
-    display: inline-block;
-    transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
+.inline-unit {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.inline-dot {
+    opacity: 0.6;
+    margin: 0 0.1rem;
+}
+
+.inline-desc {
+    opacity: 0.95;
+    text-transform: capitalize;
 }
 
 /* Olivia-faktor/UV status-stiler */
@@ -564,55 +598,105 @@ button:focus-visible,
     border: 1px solid rgba(236, 72, 153, 0.15);
 }
 
-/* Hero Temperatur og Symbol */
-.location-summary-temp {
+/* Sirkulær Gauge og Omgivende elementer for Olivia-faktor (UV) */
+.location-summary-olivia {
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
+    align-items: center;
+    gap: 0.85rem;
+    text-align: center;
 }
 
-.avg-icon-container {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 0.25rem;
-    animation: float 6s infinite ease-in-out;
-}
-
-.temp-display {
+.olivia-circle-gauge {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3.5px solid var(--border-color); /* Dynamisk overstyrt i JS */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
-    align-items: flex-start;
-    line-height: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
+    user-select: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    animation: pulseGlow 8s infinite ease-in-out;
 }
 
-.temp-value {
-    font-size: 4rem;
+.olivia-circle-gauge:hover {
+    transform: scale(1.05) translateY(-2px);
+}
+
+.olivia-gauge-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+    margin-bottom: -0.15rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.olivia-gauge-value {
+    font-size: 2.8rem;
     font-weight: 800;
     letter-spacing: -0.04em;
-    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    line-height: 1.1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.temp-unit {
-    font-size: 2rem;
-    font-weight: 600;
-    margin-top: 0.4rem;
+.olivia-gauge-status {
+    font-size: 0.72rem;
+    font-weight: 850;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: rgba(255, 255, 255, 0.12);
+    margin-top: 0.15rem;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+/* Olivia-faktor gauge status farger i sirkelen */
+.olivia-gauge-status.lav {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+}
+
+.olivia-gauge-status.moderat {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.15);
+}
+
+.olivia-gauge-status.høy {
+    color: #f97316;
+    background: rgba(249, 115, 22, 0.15);
+}
+
+.olivia-gauge-status.ekstrem {
+    color: #ec4899;
+    background: rgba(236, 72, 153, 0.15);
+}
+
+.olivia-hero-advice {
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.45;
+    max-width: 220px;
     opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    margin: 0;
 }
 
-.weather-desc {
-    font-size: 1.1rem;
-    font-weight: 600;
-    opacity: 0.95;
-    margin-top: 0.25rem;
-    text-transform: capitalize;
-}
-
-@keyframes float {
-    0% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-8px) rotate(2deg); }
-    100% { transform: translateY(0px) rotate(0deg); }
+@keyframes pulseGlow {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0px); }
 }
 
 /* --------------------------------------------------------------------------
@@ -880,7 +964,7 @@ button:focus-visible,
         padding: 3.5rem 3rem;
     }
 
-    .location-summary-temp {
+    .location-summary-olivia {
         align-items: flex-start;
         text-align: left;
         margin-top: auto;
@@ -962,17 +1046,18 @@ button:focus-visible,
         gap: 1.5rem;
     }
 
-    .location-summary-temp {
+    .location-summary-olivia {
         align-items: center;
         text-align: center;
     }
 
-    .location-meta h2 {
-        font-size: 2.2rem;
+    .secondary-weather-box {
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .temp-value {
-        font-size: 3.2rem;
+    .location-meta h2 {
+        font-size: 2.2rem;
     }
 
     .location-comparison {
@@ -985,12 +1070,99 @@ button:focus-visible,
         margin-bottom: 1rem;
     }
 
-    .comparison-table th, 
-    .comparison-table td {
-        padding: 1rem 0.75rem;
+    /* Mobil-optimalisering for sammenligningstabellen (Tabell til Glassmorphic Cards) */
+    .comparison-table {
+        border: none;
+        background: transparent;
+        display: block;
+        width: 100%;
+    }
+
+    .comparison-table thead {
+        /* Skjul tabelloverskriftene på mobil */
+        display: none;
+    }
+
+    .comparison-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        width: 100%;
+    }
+
+    .comparison-table tr {
+        display: block;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        transition: transform var(--transition-normal), border-color var(--transition-fast);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .comparison-table tr:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Leverandør-info som korthode */
+    .comparison-table tr td.provider-info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        background: transparent;
+        width: 100% !important;
+        box-sizing: border-box;
     }
 
     .provider-name {
-        display: none; /* Skjuler navnet på små mobiler siden logo-boblen er nok */
+        display: inline !important; /* Vises i korthodet på mobil */
+        font-size: 1rem;
+        color: white;
+    }
+
+    .comparison-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border: none;
+        font-size: 0.95rem;
+        text-align: right;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    /* Legg til label til venstre basert på data-label-attributtet */
+    .comparison-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-muted);
+        text-align: left;
+        font-size: 0.9rem;
+    }
+
+    /* Spesifikk overstyring for å skjule 'Status:' etiketten på mobil for leverandørfeltet siden det er korthodet */
+    .comparison-table td.provider-info::before {
+        content: none;
+    }
+
+    .table-cond-cell {
+        justify-content: flex-end;
+    }
+
+    /* Sørg for at statusindikatoren flyter pent til høyre */
+    .comparison-table td .status-indicator {
+        margin-left: auto;
     }
 }
